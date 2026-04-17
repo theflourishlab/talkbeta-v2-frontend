@@ -10,6 +10,8 @@ import { useRef, useState, useCallback } from "react";
 export interface UseRecorderReturn {
   isRecording: boolean;
   elapsedSeconds: number;
+  /** Ref that always holds the current elapsed seconds — safe to read in callbacks */
+  elapsedSecondsRef: React.MutableRefObject<number>;
   startRecording: () => Promise<void>;
   stopRecording: () => Promise<Blob>;
   error: string | null;
@@ -24,6 +26,8 @@ export function useRecorder(maxDurationMs = 90_000): UseRecorderReturn {
   const chunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const resolveRef = useRef<((blob: Blob) => void) | null>(null);
+  // Ref mirrors the state — always current, safe inside async callbacks
+  const elapsedSecondsRef = useRef<number>(0);
 
   const cleanup = useCallback(() => {
     if (timerRef.current) {
@@ -36,6 +40,7 @@ export function useRecorder(maxDurationMs = 90_000): UseRecorderReturn {
     setError(null);
     chunksRef.current = [];
     setElapsedSeconds(0);
+    elapsedSecondsRef.current = 0;
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -72,6 +77,7 @@ export function useRecorder(maxDurationMs = 90_000): UseRecorderReturn {
       timerRef.current = setInterval(() => {
         const elapsed = Math.floor((Date.now() - start) / 1000);
         setElapsedSeconds(elapsed);
+        elapsedSecondsRef.current = elapsed;
 
         // Auto-stop at max duration
         if (elapsed >= maxDurationMs / 1000) {
@@ -99,5 +105,5 @@ export function useRecorder(maxDurationMs = 90_000): UseRecorderReturn {
     });
   }, []);
 
-  return { isRecording, elapsedSeconds, startRecording, stopRecording, error };
+  return { isRecording, elapsedSeconds, elapsedSecondsRef, startRecording, stopRecording, error };
 }

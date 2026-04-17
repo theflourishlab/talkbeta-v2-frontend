@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Mono, Inter, Fraunces } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -36,7 +37,11 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${dmMono.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">{children}</body>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        {children}
+      </body>
+      {/* Tally popup embed script — loads after page is interactive */}
+      <Script src="https://tally.so/widgets/embed.js" strategy="afterInteractive" />
     </html>
   );
 }

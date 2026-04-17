@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -10,14 +11,62 @@ import {
   CheckCircle2,
   AlertTriangle,
   RotateCcw,
+  MessageSquareHeart,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/use-session";
+import posthog from "posthog-js";
 
 export function CompareScreen() {
   const { state, dispatch } = useSession();
-  const { feedback1, feedback2, transcript1, transcript2 } = state;
+  const { feedback1, feedback2, transcript1, transcript2, usageSummary, prompt } = state;
+  const hasFiredEvent = useRef(false);
+
+  // Fire a single analytics event when the compare screen first loads.
+  // This gives us per-session cost data in PostHog so we can calculate
+  // average cost per session for partner pricing conversations.
+  useEffect(() => {
+    if (hasFiredEvent.current) return;
+    if (!feedback1 || !feedback2) return;
+
+    const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+    if (!key) {
+      // No key configured — skip silently (expected in local dev without .env.local)
+      return;
+    }
+
+    posthog.init(key, {
+      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
+      persistence: "memory", // No cookies — privacy-friendly for a pilot
+      autocapture: false,    // Manual events only; we don't need pageview noise
+    });
+
+    posthog.capture("session_completed", {
+      // Session context
+      session_type: "standard-2-attempt",
+      prompt_category: prompt?.category ?? "unknown",
+
+      // Whisper usage
+      whisper_seconds: usageSummary.totalAudioSeconds,
+      whisper_cost_usd: usageSummary.whisperCostUSD,
+
+      // Claude usage
+      claude_input_tokens: usageSummary.totalInputTokens,
+      claude_output_tokens: usageSummary.totalOutputTokens,
+      claude_cost_usd: usageSummary.claudeCostUSD,
+
+      // Total cost — the main metric for partner pricing
+      estimated_cost_usd: usageSummary.estimatedCostUSD,
+
+      // Outcome context
+      attempt1_score: feedback1.structure_score,
+      attempt2_score: feedback2.structure_score,
+      score_delta: feedback2.structure_score - feedback1.structure_score,
+    });
+
+    hasFiredEvent.current = true;
+  }, [feedback1, feedback2, usageSummary, prompt]);
 
   if (!feedback1 || !feedback2) return null;
 
@@ -194,7 +243,7 @@ export function CompareScreen() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="flex gap-3 justify-center pt-4 pb-8"
+          className="flex gap-3 justify-center pt-4"
         >
           <Button
             onClick={() => dispatch({ type: "RESET" })}
@@ -204,6 +253,31 @@ export function CompareScreen() {
             <RotateCcw className="w-4 h-4" />
             Try Another Prompt
           </Button>
+        </motion.div>
+
+        {/* Tally feedback prompt — appears after 2s so the user absorbs results first */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2, type: "spring", stiffness: 120, damping: 18 }}
+          className="flex flex-col items-center gap-2 pb-10"
+        >
+          <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-muted-foreground">
+            2 minutes · anonymous
+          </p>
+          <button
+            data-tally-open="WOp8pL"
+            data-tally-emoji-text="👋"
+            data-tally-emoji-animation="wave"
+            data-tally-auto-close="0"
+            data-tally-form-events-forwarding="1"
+            className="group flex items-center gap-2.5 rounded-full border border-rust/30 bg-rust/5
+                       px-5 py-2.5 text-[13px] font-medium text-rust transition-all duration-200
+                       hover:bg-rust/10 hover:border-rust/50 hover:shadow-sm"
+          >
+            <MessageSquareHeart className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" />
+            Share your experience — help us build this better
+          </button>
         </motion.div>
       </div>
     </div>

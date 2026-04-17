@@ -13,7 +13,7 @@ const MAX_SECONDS = 90;
 
 export function RecordScreen() {
   const { state, dispatch } = useSession();
-  const { isRecording, elapsedSeconds, startRecording, stopRecording, error } =
+  const { isRecording, elapsedSeconds, elapsedSecondsRef, startRecording, stopRecording, error } =
     useRecorder(MAX_SECONDS * 1000);
   const hasStarted = useRef(false);
 
@@ -29,6 +29,8 @@ export function RecordScreen() {
   }, [startRecording]);
 
   const handleStop = useCallback(async () => {
+    // Read from the ref, not state — avoids stale closure capturing 0
+    const recordedSeconds = elapsedSecondsRef.current;
     const blob = await stopRecording();
 
     // Signal processing state
@@ -39,8 +41,11 @@ export function RecordScreen() {
     }
 
     try {
-      // Step 1: Transcribe
-      const { transcript } = await transcribeAudio(blob);
+      // Step 1: Transcribe — send the recording duration so the backend echoes it back
+      const { transcript, audio_duration_seconds } = await transcribeAudio(
+        blob,
+        recordedSeconds
+      );
 
       // Step 2: Get feedback
       const feedback = await getFeedback({
@@ -50,7 +55,15 @@ export function RecordScreen() {
         previous_transcript: isAttempt2 ? state.transcript1! : undefined,
       });
 
-      // Step 3: Update state
+      // Step 3: Accumulate usage — audio seconds + Claude tokens for this attempt
+      dispatch({
+        type: "ACCUMULATE_USAGE",
+        audioSeconds: audio_duration_seconds,
+        inputTokens: feedback.usage.input_tokens,
+        outputTokens: feedback.usage.output_tokens,
+      });
+
+      // Step 4: Update state
       if (isAttempt2) {
         dispatch({ type: "SET_ATTEMPT_2", transcript, feedback });
       } else {
@@ -66,7 +79,8 @@ export function RecordScreen() {
       );
       dispatch({ type: "RESET" });
     }
-  }, [stopRecording, dispatch, state, isAttempt2]);
+  }, [stopRecording, dispatch, state, isAttempt2, elapsedSecondsRef]);
+
 
   // Auto-stop when max time reached
   useEffect(() => {

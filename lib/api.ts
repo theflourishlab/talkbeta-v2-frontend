@@ -13,8 +13,17 @@ export interface Prompt {
   text: string;
 }
 
+export interface UsageMetrics {
+  /** Exact tokens sent to Claude for this call */
+  input_tokens: number;
+  /** Exact tokens returned by Claude for this call */
+  output_tokens: number;
+}
+
 export interface TranscriptionResponse {
   transcript: string;
+  /** Duration of the audio clip in seconds, echoed back from what the frontend sent */
+  audio_duration_seconds: number;
 }
 
 export interface FeedbackResponse {
@@ -27,6 +36,8 @@ export interface FeedbackResponse {
   // Attempt 2 fields
   what_changed?: string | null;
   remaining_collapse_point?: string | null;
+  // Exact Claude token counts for this call
+  usage: UsageMetrics;
 }
 
 // ── Prompts ──────────────────────────────────────────────────
@@ -41,10 +52,12 @@ export async function fetchPrompts(): Promise<Prompt[]> {
 // ── Transcription ────────────────────────────────────────────
 
 export async function transcribeAudio(
-  audioBlob: Blob
+  audioBlob: Blob,
+  durationSeconds: number = 0
 ): Promise<TranscriptionResponse> {
   const formData = new FormData();
   formData.append("audio", audioBlob, "recording.webm");
+  formData.append("duration_seconds", String(durationSeconds));
 
   const res = await fetch(`${API_BASE}/api/sessions/transcribe`, {
     method: "POST",
