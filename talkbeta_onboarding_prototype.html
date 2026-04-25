@@ -1,0 +1,202 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Instrument+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0d0d0d;--paper:#f5f0e8;--cream:#ede8da;
+  --gold:#c9a84c;--rust:#b84c2a;--muted:#8a8070;--slate:#2c3e50;
+  --f:'Fraunces',Georgia,serif;
+  --s:'Instrument Sans',system-ui,sans-serif;
+  --m:'DM Mono','Courier New',monospace
+}
+.wrap{display:flex;justify-content:center;padding:36px 0 48px}
+.phone{
+  width:358px;height:758px;border-radius:48px;overflow:hidden;
+  position:relative;flex-shrink:0;
+  box-shadow:0 0 0 1.5px rgba(255,255,255,0.07),0 0 0 9px #0e0e0e,0 0 0 10px rgba(255,255,255,0.03),0 48px 96px rgba(0,0,0,0.55)
+}
+.pill{
+  position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  width:124px;height:34px;background:#000;border-radius:20px;z-index:99;
+  pointer-events:none;display:flex;align-items:center;justify-content:center;gap:8px
+}
+.pill-cam{width:11px;height:11px;border-radius:50%;background:#1a1a1a;border:2px solid #2a2a2a}
+.pill-bar{width:28px;height:5px;border-radius:3px;background:#1a1a1a}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden}
+.screen.on{display:flex}
+.sbar{display:flex;justify-content:space-between;align-items:center;padding:58px 24px 0;height:80px;flex-shrink:0}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.mono{font-family:var(--m);letter-spacing:.15em;text-transform:uppercase}
+.serif{font-family:var(--f)}
+.sans{font-family:var(--s)}
+.back-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:7px;padding:0}
+.cat-card{
+  background:var(--ink);border:1px solid rgba(255,255,255,0.07);border-radius:14px;
+  padding:18px 20px;margin:0 20px 10px;cursor:pointer;display:flex;flex-direction:column;gap:7px
+}
+.cat-card:active{border-color:var(--gold)}
+.dots{display:flex;gap:5px;justify-content:center;padding:12px 0;flex-shrink:0}
+.dot{height:5px;border-radius:3px;transition:all .28s;width:5px}
+.dot.lit{width:22px;background:var(--gold) !important}
+.slot-area{flex:1;display:flex;flex-direction:column;justify-content:center;padding:12px 28px 8px}
+.m-cta{
+  font-family:var(--m);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  border-radius:10px;padding:17px;cursor:pointer;margin:8px 28px 32px;
+  display:block;width:calc(100% - 56px);flex-shrink:0;transition:opacity .15s
+}
+.m-cta:active{opacity:.8}
+</style>
+
+<div class="wrap">
+<div class="phone">
+<div class="pill"><div class="pill-cam"></div><div class="pill-bar"></div></div>
+
+<div class="screen on" id="s1" style="background:var(--ink)">
+  <div class="sbar">
+    <span class="mono" style="font-size:11px;color:var(--paper);letter-spacing:.08em">9:41</span>
+    <div style="display:flex;gap:5px;align-items:center">
+      <svg width="15" height="11" viewBox="0 0 15 11"><rect x="0" y="4" width="2.5" height="7" fill="#f5f0e8" opacity=".38" rx=".5"/><rect x="4" y="2.5" width="2.5" height="8.5" fill="#f5f0e8" opacity=".55" rx=".5"/><rect x="8" y="1" width="2.5" height="10" fill="#f5f0e8" opacity=".75" rx=".5"/><rect x="12" y="0" width="2.5" height="11" fill="#f5f0e8" rx=".5"/></svg>
+      <svg width="20" height="11" viewBox="0 0 20 11"><rect x=".5" y=".5" width="15" height="10" rx="2.5" stroke="#f5f0e8" stroke-width="1" fill="none" opacity=".45"/><rect x="2" y="2" width="9" height="7" rx="1" fill="#f5f0e8" opacity=".6"/><rect x="16.5" y="3" width="2.5" height="5" rx="1" fill="#f5f0e8" opacity=".3"/></svg>
+    </div>
+  </div>
+  <div class="scroll" style="padding:20px 28px 0">
+    <div class="mono" style="font-size:10px;color:var(--gold);margin-bottom:48px">TalkBeta</div>
+    <h1 class="serif" style="font-size:38px;line-height:1.1;color:var(--paper);font-weight:600;margin-bottom:22px">
+      You think<br/>clearly. Why<br/>doesn't it<br/><em style="color:var(--gold)">sound that way?</em>
+    </h1>
+    <p class="sans" style="font-size:15px;line-height:1.74;color:var(--muted);margin-bottom:34px">
+      Most people aren't bad at thinking. They're untrained at speaking — and it costs more than you've been told.
+    </p>
+    <div style="border-left:2px solid var(--rust);padding:3px 0 3px 16px;margin-bottom:44px">
+      <p class="sans" style="font-size:13px;line-height:1.76;color:rgba(245,240,232,.38)">The job you didn't get. The room you lost. The point you couldn't land when it counted.</p>
+      <p class="sans" style="font-size:13px;line-height:1.76;color:rgba(245,240,232,.38);margin-top:10px">Those weren't failures of intelligence — they were failures of expression.</p>
+    </div>
+    <div style="height:1px;background:rgba(255,255,255,0.07);margin-bottom:28px"></div>
+    <p class="mono" style="font-size:9px;color:rgba(138,128,112,0.55);text-align:center;margin-bottom:14px">TalkBeta closes that gap</p>
+  </div>
+  <button class="m-cta" style="background:var(--gold);color:var(--ink);border:none" onclick="go('s2')">What are you training for →</button>
+</div>
+
+<div class="screen" id="s2" style="background:var(--paper)">
+  <div class="sbar">
+    <button class="back-btn" onclick="go('s1')">
+      <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M6 1L1 6L6 11" stroke="#8a8070" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span class="mono" style="font-size:9px;color:var(--muted)">Back</span>
+    </button>
+  </div>
+  <div style="padding:14px 24px 18px">
+    <div class="mono" style="font-size:9px;color:var(--muted);margin-bottom:10px">Choose your track</div>
+    <h2 class="serif" style="font-size:30px;font-weight:600;color:var(--ink);line-height:1.2">What brings you<br/>to TalkBeta?</h2>
+  </div>
+  <div class="scroll" style="padding:2px 0 10px">
+    <div class="cat-card" onclick="open_('interview')">
+      <div class="mono" style="font-size:9px;color:var(--gold)">Interview Ready</div>
+      <p class="sans" style="font-size:14px;color:rgba(245,240,232,.78);line-height:1.54">Stop leaving interviews hoping for the best.</p>
+      <span class="sans" style="font-size:12px;color:var(--muted)">→</span>
+    </div>
+    <div class="cat-card" onclick="open_('pitch')">
+      <div class="mono" style="font-size:9px;color:var(--gold)">Pitch Sharp</div>
+      <p class="sans" style="font-size:14px;color:rgba(245,240,232,.78);line-height:1.54">Make people feel what you feel about what you're building.</p>
+      <span class="sans" style="font-size:12px;color:var(--muted)">→</span>
+    </div>
+    <div class="cat-card" onclick="open_('debate')">
+      <div class="mono" style="font-size:9px;color:var(--gold)">Debate Fast</div>
+      <p class="sans" style="font-size:14px;color:rgba(245,240,232,.78);line-height:1.54">Respond to anything. Lose your composure over nothing.</p>
+      <span class="sans" style="font-size:12px;color:var(--muted)">→</span>
+    </div>
+    <div class="cat-card" onclick="open_('everyday')">
+      <div class="mono" style="font-size:9px;color:var(--gold)">Speak Freely</div>
+      <p class="sans" style="font-size:14px;color:rgba(245,240,232,.78);line-height:1.54">Start sounding like the person you actually are.</p>
+      <span class="sans" style="font-size:12px;color:var(--muted)">→</span>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="s3">
+  <div class="sbar" id="m-bar">
+    <button class="back-btn" onclick="go('s2')">
+      <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M6 1L1 6L6 11" stroke="#8a8070" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span class="mono" style="font-size:9px;color:var(--muted)">Categories</span>
+    </button>
+    <span class="mono" id="m-lbl" style="font-size:9px;color:var(--gold)"></span>
+  </div>
+  <div class="dots" id="m-dots"></div>
+  <div class="slot-area" id="m-slot"></div>
+  <button class="m-cta" id="m-cta" onclick="next_()"></button>
+</div>
+
+</div>
+</div>
+
+<script>
+const D={
+  interview:{label:'Interview Ready',dark:true,steps:[
+    {slot:'PAIN',head:null,body:"You know your answers. You've rehearsed them. But the moment you're in that room — you ramble, trail off, or freeze on a question you've answered a hundred times before.",a:null},
+    {slot:'STAKES',head:null,body:"Every interview you walk out of unsure about is a job, a salary, and a version of your future you don't get back.",a:'rust'},
+    {slot:'REFRAME',head:"It's not confidence.\nIt's structure.",body:"When you know how to organize your thinking under pressure, the words follow. That's not a personality trait — it's trainable.",a:null},
+    {slot:'PROMISE',head:null,body:"You'll stop leaving interviews hoping for the best and start walking out knowing you represented yourself well.",a:'gold'},
+    {slot:'DRILL INTRO',head:"Here's what you're about to do.",body:"Your drills build the ability to structure a clear, compelling answer in seconds — even for questions you've never heard before.",a:null,last:true}
+  ]},
+  pitch:{label:'Pitch Sharp',dark:false,steps:[
+    {slot:'PAIN',head:null,body:"You know your business inside out. But in front of an investor or a panel, the clarity you have in your head doesn't make it into the room. You over-explain what's simple and under-sell what's powerful.",a:null},
+    {slot:'STAKES',head:null,body:"One unclear pitch can cost you a check, a partner, or the shot at building what you've spent months on.",a:'rust'},
+    {slot:'REFRAME',head:"A great pitch isn't\nthe right words.",body:"It's making someone else feel what you feel about what you're building. That's a skill, not a gift — and it's learnable.",a:null},
+    {slot:'PROMISE',head:null,body:"You'll walk into any room and make people understand, believe, and want to be part of what you're building.",a:'gold'},
+    {slot:'DRILL INTRO',head:"Here's what you're about to do.",body:"Your drills train you to distill complex ideas into clear language and hold your ground when the questions get hard.",a:null,last:true}
+  ]},
+  debate:{label:'Debate Fast',dark:true,steps:[
+    {slot:'PAIN',head:null,body:"You're sharp. You can build a case. But when someone hits you with an argument you didn't prepare for, there's a gap between what you know and what you can say — and that gap costs you the room.",a:null},
+    {slot:'STAKES',head:null,body:"In a debate, hesitation reads as weakness. One fumbled response can undo a position you've spent the whole round building.",a:'rust'},
+    {slot:'REFRAME',head:"Speed isn't quickness.\nIt's pattern recognition.",body:"The more you practice structuring arguments under pressure, the faster your mind retrieves and deploys them.",a:null},
+    {slot:'PROMISE',head:null,body:"You'll hear any argument and respond with a clear, structured counter — without losing your composure or your thread.",a:'gold'},
+    {slot:'DRILL INTRO',head:"Here's what you're about to do.",body:"Your drills simulate live pressure — prompts you haven't seen, positions to defend on the spot, timed to build your response speed and structure.",a:null,last:true}
+  ]},
+  everyday:{label:'Speak Freely',dark:false,steps:[
+    {slot:'PAIN',head:null,body:"It's not one big moment that gets you — it's the small ones. The meeting where you couldn't find the words. The opinion you had but couldn't land. The conversation where you felt like a lesser version of yourself.",a:null},
+    {slot:'STAKES',head:null,body:"How you show up in everyday conversation shapes how people see you, how much space you take up, and how much of yourself actually gets expressed.",a:'rust'},
+    {slot:'REFRAME',head:"You're not a bad\ncommunicator.",body:"You're an untrained one. Everyday fluency is a skill — and like every skill, it compounds with practice.",a:null},
+    {slot:'PROMISE',head:null,body:"You'll stop trailing off mid-thought and start saying what you actually mean — clearly, confidently, without performing.",a:'gold'},
+    {slot:'DRILL INTRO',head:"Here's what you're about to do.",body:"Your drills build the habit of thinking and speaking at the same time — so expression starts feeling natural, not effortful.",a:null,last:true}
+  ]}
+};
+
+let cur=null,step=0;
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+function open_(key){cur=key;step=0;render();go('s3')}
+function next_(){
+  if(step<D[cur].steps.length-1){step++;render();}
+  else{go('s2');}
+}
+function render(){
+  const cat=D[cur];const s=cat.steps[step];const dk=cat.dark;
+  const s3=document.getElementById('s3');
+  s3.style.background=dk?'var(--ink)':'var(--paper)';
+  document.getElementById('m-lbl').textContent=cat.label.toUpperCase();
+  const dotsEl=document.getElementById('m-dots');
+  dotsEl.innerHTML=cat.steps.map((_,i)=>`<div class="dot${i===step?' lit':''}" style="background:${i===step?'var(--gold)':dk?'rgba(255,255,255,0.16)':'rgba(0,0,0,0.14)'}"></div>`).join('');
+  const bC=s.a==='rust'?'var(--rust)':s.a==='gold'?'var(--gold)':dk?'rgba(245,240,232,0.7)':'rgba(13,13,13,0.67)';
+  const lC=dk?'rgba(138,128,112,0.7)':'rgba(13,13,13,0.35)';
+  const hC=dk?'var(--paper)':'var(--ink)';
+  const headHtml=s.head?`<h3 class="serif" style="font-size:24px;font-weight:600;font-style:italic;line-height:1.2;color:${hC};margin-bottom:16px;white-space:pre-line">${s.head}</h3>`:'';
+  const accentHtml=s.a?`<div style="width:28px;height:2px;background:${s.a==='rust'?'var(--rust)':'var(--gold)'};margin-top:22px;border-radius:1px"></div>`:'';
+  document.getElementById('m-slot').innerHTML=`
+    <div class="mono" style="font-size:9px;color:${lC};margin-bottom:20px;letter-spacing:.18em">${s.slot}</div>
+    ${headHtml}
+    <p class="sans" style="font-size:16px;line-height:1.76;color:${bC}">${s.body}</p>
+    ${accentHtml}
+  `;
+  const cta=document.getElementById('m-cta');
+  cta.textContent=s.last?'Begin Training →':'Continue →';
+  if(s.last){
+    cta.style.cssText='font-family:var(--m);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border-radius:10px;padding:17px;cursor:pointer;margin:8px 28px 32px;display:block;width:calc(100% - 56px);flex-shrink:0;background:var(--gold);color:var(--ink);border:none;transition:opacity .15s';
+  } else if(dk){
+    cta.style.cssText='font-family:var(--m);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border-radius:10px;padding:17px;cursor:pointer;margin:8px 28px 32px;display:block;width:calc(100% - 56px);flex-shrink:0;background:rgba(255,255,255,0.05);color:var(--paper);border:1px solid rgba(255,255,255,0.09);transition:opacity .15s';
+  } else {
+    cta.style.cssText='font-family:var(--m);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border-radius:10px;padding:17px;cursor:pointer;margin:8px 28px 32px;display:block;width:calc(100% - 56px);flex-shrink:0;background:rgba(0,0,0,0.05);color:var(--ink);border:1px solid rgba(0,0,0,0.1);transition:opacity .15s';
+  }
+}
+</script>
