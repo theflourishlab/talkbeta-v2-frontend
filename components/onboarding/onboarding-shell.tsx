@@ -25,7 +25,7 @@ export function OnboardingShell() {
   return (
     <div className="flex justify-center min-h-screen bg-ink">
       {/* Container */}
-      <div className="relative w-full max-w-[390px] min-h-screen flex flex-col bg-ink overflow-hidden mx-auto">
+      <div className="relative w-full max-w-[490px] min-h-screen flex flex-col bg-ink overflow-hidden mx-auto">
         <AnimatePresence mode="wait">
           {currentScreen === 'entry' && (
             <motion.div
@@ -36,9 +36,9 @@ export function OnboardingShell() {
               transition={{ duration: 0.25 }}
               className="h-full"
             >
-              <EntryScreen 
-                content={globalEntry} 
-                onContinue={() => setCurrentScreen('select')} 
+              <EntryScreen
+                content={globalEntry}
+                onContinue={() => setCurrentScreen('select')}
               />
             </motion.div>
           )}
